@@ -237,7 +237,7 @@ scene("game", () => {
     }
     // destroy(b);
     destroy(e);
-    addKaboom(e.pos);
+    // addKaboom(e.pos);
     if (b.dScale < 12) {
       b.dScale = b.dScale + 0.5;
     }

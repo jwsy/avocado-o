@@ -2840,7 +2840,6 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
         shake(b.dScale * 3);
       }
       destroy(e);
-      addKaboom(e.pos);
       if (b.dScale < 12) {
         b.dScale = b.dScale + 0.5;
       } else {
