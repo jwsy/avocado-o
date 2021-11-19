@@ -317,7 +317,7 @@ scene("game", () => {
 
   get('debugText').forEach((e) => {e.hidden = true;});
   // spawn an enemy every period
-  loop(1, spawnEnemy);
+  loop(.8, spawnEnemy);
   play('avocado-o');
 });
 

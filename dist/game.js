@@ -2903,7 +2903,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     get("debugText").forEach((e) => {
       e.hidden = true;
     });
-    loop(1, spawnEnemy);
+    loop(0.8, spawnEnemy);
     play("avocado-o");
   });
   scene("main", () => {
