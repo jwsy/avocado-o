@@ -4,7 +4,7 @@ Welcome! Kaboom is a JavaScript library that helps you make games fast and fun :
 
 Build
 -----
-The dist is built in JS (cool!) by running `node run.js`
+The dist is built in JS (cool!) by running `node run.js` which builds and runs the server. Stop the server `^c` and then do the other build steps for Netlify
 
 
 Build for Netlify drag-drop
@@ -12,8 +12,10 @@ Build for Netlify drag-drop
 To use with Netlify drag-drop
 
 1. Create a new dir and copy in dist, sounds, and sprites
+
 2. Copy index.html out of dist into the new dir
 
+    ```
     avocado-remix-manual-build/
     | dist/
     | | game.js
@@ -30,3 +32,4 @@ To use with Netlify drag-drop
     | | avocado.pedit
     | | fire.pedit
     | index.html
+    ```
