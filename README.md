@@ -1,5 +1,7 @@
 ![kaboom](learn/kaboom.png) <img src="https://www.netlify.com/v3/img/components/logomark.png" height="160px">
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/3780e935-7729-4b5d-92aa-d641286295e7/deploy-status)](https://app.netlify.com/sites/avocado-o/deploys)
+
 ![avocado](avocado-icon.png)![avocado](avocado-icon.png)![avocado](avocado-icon.png)
 
 ## Play the game

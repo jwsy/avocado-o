@@ -1,5 +1,5 @@
 import kaboom from "kaboom";
-
+import {Howl} from "howler";
 
 k = kaboom({
   "fullscreen":true,"startScene":"main",
@@ -13,24 +13,29 @@ loadSound("avocado-o", "sounds/avocado-o.mp3");
 loadSound("score", "sounds/score.mp3");
 loadSound("o", "sounds/o.mp3");
 loadSound("fire", "sounds/fire.mp3");
-loadSound("Just Two", "sounds/Just Two edited.mp3");
+loadSound("J2edited", "sounds/J2edited.mp3");
 
+const avocadoOSound = new Howl({
+  src: ['sounds/avocado-o.mp3'],
+  html5: true,
+  format: ['mp3']
+});
 
 let startTime = -1;
 let turbos = 0; 
 const TURBOMAX = 2;
 
-const music = play("Just Two", {
-  volume: 0.8,
+const music = play("J2edited", {
+  volume: 0.6,
   loop: true
 });
 
 scene("game", () => {
-  music.play();
-
   // initialize context
   const PLAYER_SPEED = 200;
   let showStats = false;
+
+  music.play();
 
   layers([
     "bg",
@@ -183,7 +188,7 @@ scene("game", () => {
         && avocado.pos.y < height()
     ) {
       let angleDeg = avocado.pos.angle(targetPos.pos) + 180;
-      // console.log("moveAvocadoPos : avocado.pos.angle(targetPos.pos) = " + angleDeg);
+      console.log("moveAvocadoPos : avocado.pos.angle(targetPos.pos) = " + angleDeg);
       let movX = Math.cos(angleDeg * Math.PI/180) * PLAYER_SPEED;
       let movY = Math.sin(angleDeg * Math.PI/180) * PLAYER_SPEED;
       avocado.move(movX, movY);
@@ -210,7 +215,7 @@ scene("game", () => {
     let insertPos = pos(rand(10, width() - 10), rand(10, height() - 10));   
 
     let enemySprite = "fire";
-    play('fire');
+    play('fire', { volume: 0.4 });
 
     return add([
       sprite(enemySprite),
@@ -311,23 +316,20 @@ scene("game", () => {
   mouseDown(updateMousePosText);
 
   avocado.clicks(() => {
-    play('avocado-o');
     console.log("aloha");
+    play('avocado-o');
   });
 
   get('debugText').forEach((e) => {e.hidden = true;});
   // spawn an enemy every period
   loop(.8, spawnEnemy);
-  play('avocado-o');
+  // play('avocado-o');  
 });
 
-///
-/// main start 
-///
 scene("main", () => {
   const bg = add([
     pos(width()/2,height()/10),
-    text("avocado-o \n\nmake me HUGE\n\nClick to start"),
+    text("avocado-o \n\nmake me HUGE\n\nClick me to start", 32),
     origin("top"),
   ]);
 
@@ -341,12 +343,6 @@ scene("main", () => {
     layer("ui")    
   ]);
 
-  bg.action(() => {
-    if (mouseIsClicked()) {
-      go("game");
-    }
-  });
-
   const avocado = add([
     sprite("avocado"),
     pos(width() / 2, height() * 3 / 4),
@@ -356,20 +352,19 @@ scene("main", () => {
     {
       isOFaced: false,
       lastOFaceTime: time()
-    }
+    },
+    area(),
   ]);
 
-  avocado.action(() => {
-    if (mouseIsClicked()) {
-      go("game");
-    }
+  avocado.clicks(() => {
+    console.log("main go to game");
+    // for some strange reason I need to play a sound with Howler ONCE
+    avocadoOSound.play();
+    go("game");
   });
 
 });
 
-///
-/// end scene
-///
 scene("end", () => {
 
   layers([
@@ -377,13 +372,13 @@ scene("end", () => {
     "ui",
   ], "obj");
 
-  turbos = 0;
+  turbos = 0; 
 
   let totalTime = Date.now() - startTime;
 
   const bg = add([
     pos(width()/2,height()/10),
-    text("thank you!\n" + totalTime/1000 + "s\nI am HUGE!\n\nPlay again?\n\n", 32),
+    text("thank you!\n" + totalTime/1000 + "s\nI am HUGE!\n\nPlay again?", 32),
     origin("top"),
     layer("ui")
   ]);
@@ -398,12 +393,6 @@ scene("end", () => {
     layer("ui")    
   ]);
 
-  bg.action(() => {
-    if (mouseIsClicked()) {
-      go("game");
-    }
-  });
-
   const avocado = add([
     sprite("avocado"),
     pos(width() / 2, height() * 3 / 4),
@@ -414,14 +403,15 @@ scene("end", () => {
     {
       isOFaced: false,
       lastOFaceTime: time()
-    }
+    },
+    area()
   ]);
 
-  avocado.action(() => {
-    if (mouseIsClicked()) {
-      music.stop();
-      go("game");
-    }
+  avocado.clicks(() => {
+    console.log("end scene go to game");
+    // for some strange reason I need to play a sound with Howler ONCE
+    avocadoOSound.play();
+    go("game");
   });
 
 });
