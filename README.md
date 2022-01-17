@@ -33,7 +33,7 @@ To use with Netlify Drop (https://app.netlify.com/drop)
     | | helper.js
     | | helper.js.map
     | sounds/
-    | | Just Two edited.mp3
+    | | J2edited.mp3
     | | avocado-o.mp3
     | | fire.mp3
     | | o.mp3
@@ -46,4 +46,10 @@ To use with Netlify Drop (https://app.netlify.com/drop)
 
 3. Drag & Drop the new dir into Netlify Drop (https://app.netlify.com/drop)
 
-Bonus points: connect GitHub to Netlify and then point Netlify at the new dir
+Alternative Manual Build
+------------------------
+
+1. Connect GitHub to Netlify and then point Netlify at the new dir. In this example, it's `avocado-remix-manual-build`
+2. Build the distributable (dist) project using nvm's LTS and run `node run.js`
+3. The `run.js` builds the project. Now copy the important parts of the project to the `avocado-remix-manual-build` dir with the `manual_build.sh` script
+4. Do a `git push` and Netlify should automatically pick up the new dir and deploy it
