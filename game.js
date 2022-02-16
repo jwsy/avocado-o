@@ -5186,6 +5186,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
         startGame();
       }
     });
+    onKeyDown("space", startGame);
     onClick("avocado", startGame);
   });
   scene("end", () => {
@@ -5235,6 +5236,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
         startGame();
       }
     });
+    onKeyDown("space", startGame);
     onClick("avocado", startGame);
   });
   go("main");
