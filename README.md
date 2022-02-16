@@ -7,7 +7,7 @@
 ## Play the game
 # https://avocado-o.netlify.app/
 
-![avocado](avocado-icon.png)![avocado](avocado-icon.png)![avocado](avocado-icon.png)
+![avocado](avocado-icon.png)
 
 Welcome! Kaboom is a JavaScript library that helps you make games fast and fun :D
 
@@ -17,39 +17,8 @@ The dist is built in JS (cool!) by running `node run.js` which builds and runs t
 
 ![avocado](avocado-icon.png)![avocado](avocado-icon.png)![avocado](avocado-icon.png)
 
-Build for Netlify Drop
----------------------------
-To use with Netlify Drop (https://app.netlify.com/drop)
-
-1. Create a new dir (I named mine `avocado-remix-manual-build/`) and copy in dist, sounds, and sprites
-
-2. Copy index.html out of dist into the new dir
-
-    ```
-    avocado-remix-manual-build/
-    | dist/
-    | | game.js
-    | | game.js.map
-    | | helper.js
-    | | helper.js.map
-    | sounds/
-    | | J2edited.mp3
-    | | avocado-o.mp3
-    | | fire.mp3
-    | | o.mp3
-    | | score.mp3
-    | sprites/
-    | | avocado.pedit
-    | | fire.pedit
-    | index.html
-    ```
-
-3. Drag & Drop the new dir into Netlify Drop (https://app.netlify.com/drop)
-
-Alternative Manual Build
+Automatic Build
 ------------------------
-
-1. Connect GitHub to Netlify and then point Netlify at the new dir. In this example, it's `avocado-remix-manual-build`
-2. Build the distributable (dist) project using nvm's LTS and run `node run.js`
-3. The `run.js` builds the project. Now copy the important parts of the project to the `avocado-remix-manual-build` dir with the `manual_build.sh` script
-4. Do a `git push` and Netlify should automatically pick up the new dir and deploy it
+1. Use the `run-build.js` file based off of the `run.js` script that Replit uses to build the game (using esbuild). This file creates a `dist/` dir that is ready to host the game. Some other Replit sugar like users and the database are removed from `run.js` to create `run-build.js`
+2. Connect GitHub to Netlify and then point Netlify at the `dist` branch.
+3. Do a `git push` and GitHub actions will run `node run-build.js` and write the output `dist/` folder to the new branch **dist** where Netlify detects the new dir and deploys it to the Netlify CDN.
