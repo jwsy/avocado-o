@@ -360,7 +360,8 @@ scene("main", () => {
       startGame();
     }
   });
-
+  
+  onKeyDown("space", startGame);
   onClick('avocado', startGame);
   
 });
@@ -423,7 +424,8 @@ scene("end", () => {
       startGame();
     }
   });
-
+  
+  onKeyDown("space", startGame);
   onClick('avocado', startGame);
 
 });
