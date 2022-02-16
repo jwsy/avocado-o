@@ -317,7 +317,7 @@ scene("game", () => {
 scene("main", () => {
   const bg = add([
     pos(width()/2,height()/10),
-    text("avocado-o \n\nmake me HUGE\n\nClick me to start", 32),
+    text("avocado-o\nby replit@jwsy \n\nmake me HUGE\n\nClick me to start", 32),
     origin("top"),
   ]);
 
