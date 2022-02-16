@@ -1,22 +1,13 @@
-// kaboom dev server
+// `run-build.js` is based off of the `run.js` script that 
+// Replit uses to build the game using esbuild. 
+// This script creates a `dist/` dir that is ready to host the game. 
+// Replit functionality including users & database are removed.
 
 const fs = require("fs");
 const fse = require("fs-extra");
 const path = require("path");
 const esbuild = require("esbuild");
-const express = require("express");
-const ws = require("ws");
-const http = require("http");
-const Database = require("@replit/database");
-const multiplayer = require("./multiplayer");
-const db = new Database();
-const app = express();
-const server = http.createServer(app);
-const port = process.env.PORT || 8000;
 let err = null;
-
-// start multiplayer server
-// multiplayer(server);
 
 // build user game
 function buildGame() {
@@ -95,102 +86,3 @@ function buildGame() {
 
 }
 buildGame();
-
-// server stuff
-// app.use(express.json({ strict: false }));
-
-// app.get("/", (req, res) => {
-// 	err = null;
-// 	buildGame();
-// 	res.sendFile(__dirname + "/dist/index.html");
-// 	render();
-// });
-
-// app.post("/error", (req, res) => {
-// 	err = req.body;
-// 	render();
-// });
-
-// app.get("/user", (req, res) => {
-// 	if (req.headers["x-replit-user-id"]) {
-// 		res.json({
-// 			id: req.headers["x-replit-user-id"] || null,
-// 			name: req.headers["x-replit-user-name"] || null,
-// 		});
-// 	} else {
-// 		res.json(null);
-// 	}
-// });
-
-// app.get("/db", async (req, res) => {
-// 	try {
-// 		res.json(await db.list());
-// 	} catch (e) {
-// 		res.sendStatus(500);
-// 	}
-// });
-
-// app.delete("/db", async (req, res) => {
-// 	try {
-// 		await db.empty();
-// 		res.sendStatus(200);
-// 	} catch (e) {
-// 		res.sendStatus(500);
-// 	}
-// });
-
-// app.get("/db/:item", async (req, res) => {
-// 	try {
-// 		res.json(await db.get(req.params.item));
-// 	} catch (e) {
-// 		res.sendStatus(500);
-// 	}
-// });
-
-// app.post("/db/:item", async (req, res) => {
-// 	try {
-// 		await db.set(req.params.item, req.body);
-// 		res.sendStatus(200);
-// 	} catch (e) {
-// 		res.sendStatus(500);
-// 	}
-// });
-
-// app.delete("/db/:item", async (req, res) => {
-// 	try {
-// 		await db.delete(req.params.item);
-// 		res.sendStatus(200);
-// 	} catch (e) {
-// 		res.sendStatus(500);
-// 	}
-// });
-
-// app.use(express.static(__dirname));
-
-// server.listen(port);
-
-// // term output
-// const red = (msg) => `\x1b[31m${msg}\x1b[0m`;
-// const dim = (msg) => `\x1b[2m${msg}\x1b[0m`;
-
-// function render() {
-
-// 	// kaboooooom!
-// 	process.stdout.write("\x1b[2J");
-// 	process.stdout.write("\x1b[H");
-// 	process.stdout.write("kaboom!\n");
-
-// 	console.log(dim("\n(tip: Cmd + S in editor refresh webview)"));
-
-// 	// error stack trace
-// 	if (err) {
-// 		console.log("");
-// 		console.error(red(`ERROR: ${err.msg}`));
-// 		if (err.stack) {
-// 			err.stack.forEach((trace) => {
-// 				console.error(`    -> ${trace.file}:${trace.line}:${trace.col}`);
-// 			});
-// 		}
-// 	}
-
-// }
