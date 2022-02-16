@@ -4953,7 +4953,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
       {
         isOFaced: false,
         lastOFaceTime: time(),
-        dir: pos(0, 0),
+        dir: null,
         stopPoint: pos(width() / 2, height() / 2),
         dScale: 2
       },
