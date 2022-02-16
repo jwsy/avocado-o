@@ -10,7 +10,6 @@ k = kaboom({
 loadPedit("fire", "sprites/fire.pedit");
 loadPedit("avocado", "sprites/avocado.pedit");
 loadSound("avocado-o", "sounds/avocado-o.mp3");
-loadSound("score", "sounds/score.mp3");
 loadSound("o", "sounds/o.mp3");
 loadSound("fire", "sounds/fire.mp3");
 loadSound("J2edited", "sounds/J2edited.mp3");
@@ -83,7 +82,6 @@ scene("game", () => {
     pos(width() / 2, height() / 2),
     origin("center"),
     "avocado",
-    // scale(3),
     {
       isOFaced: false,
       lastOFaceTime: time(),
@@ -94,7 +92,18 @@ scene("game", () => {
     area(),
   ]);
 
-  avocado.action((r) => {
+  onClick('avocado', () => {play('avocado-o');});
+  onTouchStart((id, pos) => {
+    console.log(`touched ${pos}, avocado ${avocado.pos}`);
+    // console.log(`avocado tx pos ${pos.x - avocado.pos.x}`);
+    // console.log(`avocado ty pos ${pos.y - avocado.pos.y}`);
+    console.log(`avocado dist pos ${pos.dist(avocado.pos)}`);
+    if (pos.dist(avocado.pos) < 150) {
+      play('avocado-o');
+    }
+  });
+
+  onUpdate("avocado", (r) => {
     if (r.isOFaced) {
       r.frame = 1;
       r.scale = vec2(avocado.dScale + Math.sin(2.5 * (time()- r.lastOFaceTime)) * 2.8);
@@ -110,7 +119,7 @@ scene("game", () => {
       r.scale = vec2(avocado.dScale + Math.sin(time()) * .1);
     }
 
-    if (true
+    if ( avocado.dir
         && avocado.pos.x > 0
         && avocado.pos.x < width()
         && avocado.pos.y > 0
@@ -125,18 +134,18 @@ scene("game", () => {
       let movY = Math.sin(angleDeg * Math.PI/180) * PLAYER_SPEED;
       avocado.move(movX, movY);
     }
-    else {
-      avocado.move(0,0);
-    }
+    // else {
+    //   avocado.move(0,0);
+    // }
   });
 
-  keyPress('s', () => {
+  onKeyPress('s', () => {
     console.log('Toggle stats');
     showStats = !showStats;
     get('debugText').forEach((e) => {e.hidden = showStats;});
   });
 
-  keyPress('t', () => {
+  onKeyPress('t', () => {
     if (turbos > TURBOMAX) {
       add([
         pos(width()/2,height()/10),
@@ -158,58 +167,36 @@ scene("game", () => {
 
   function movePlayerLeft() {
     if (avocado.pos.x > 0) {
+      avocado.dir = null;
       avocado.move(-PLAYER_SPEED, 0);
     }
   };
 
   function movePlayerRight() {
     if (avocado.pos.x < width()) {
+      avocado.dir = null;
       avocado.move(PLAYER_SPEED, 0);
     }
   };
 
   function movePlayerUp() {
     if (avocado.pos.y > 0) {
+      avocado.dir = null;
       avocado.move(0, -PLAYER_SPEED);
     }
   };
 
   function movePlayerDown() {
     if (avocado.pos.y < height()) {
+      avocado.dir = null;
       avocado.move(0, PLAYER_SPEED);
     }
   };
 
-  function moveAvocadoPos(targetPos) {
-    if (true
-        && avocado.pos.x > 0
-        && avocado.pos.x < width()
-        && avocado.pos.y > 0
-        && avocado.pos.y < height()
-    ) {
-      let angleDeg = avocado.pos.angle(targetPos.pos) + 180;
-      console.log("moveAvocadoPos : avocado.pos.angle(targetPos.pos) = " + angleDeg);
-      let movX = Math.cos(angleDeg * Math.PI/180) * PLAYER_SPEED;
-      let movY = Math.sin(angleDeg * Math.PI/180) * PLAYER_SPEED;
-      avocado.move(movX, movY);
-    }
-  }
-
-  keyDown("left", () => {
-    movePlayerLeft();
-  });
-
-  keyDown("right", () => {
-    movePlayerRight();
-  });
-
-  keyDown("up", () => {
-    movePlayerUp();
-  });
-
-  keyDown("down", () => {
-    movePlayerDown();
-  });
+  onKeyDown("left", movePlayerLeft);
+  onKeyDown("right", movePlayerRight);
+  onKeyDown("up", movePlayerUp);
+  onKeyDown("down", movePlayerDown);
 
   function spawnEnemy() {
     let insertPos = pos(rand(10, width() - 10), rand(10, height() - 10));   
@@ -225,12 +212,13 @@ scene("game", () => {
       area(),
     ]);
   }
-  action("enemy", (e) => {
+  
+  onUpdate("enemy", (e) => {
     // console.log(e);
     e.scale = vec2(1 + 0.1 * Math.sin(time()));
   });
 
-  collides("avocado", "enemy", (b, e) => {
+  onCollide("avocado", "enemy", (b, e) => {
     // console.log(JSON.stringify(e) );
     if (e.is("rainbowpoop")) {
       score.value += 10;
@@ -240,9 +228,8 @@ scene("game", () => {
       score.value += 1;
       shake(b.dScale * 3);
     }
-    // destroy(b);
     destroy(e);
-    // addKaboom(e.pos);
+    addKaboom(e.pos);
     if (b.dScale < 12) {
       b.dScale = b.dScale + 0.5;
     }
@@ -278,12 +265,16 @@ scene("game", () => {
     fpsText.value = parseFloat(debug.fps()).toFixed(3);
     fpsText.text = "fps: " + fpsText.value;
   };
-  loop(0.1, updateFps);
+  loop(0.5, updateFps);
 
-  const aPosText = add([pos(width() * 0.6, 12 * 2), text("apos: " +  JSON.stringify(avocado.pos), { font: "sinko" }), { value: 0 }, "debugText"]);
+  const aPosText = add([pos(width() * 0.5, 24 * 2), text("apos: " +  JSON.stringify(avocado.pos), { font: "sinko"
+                                                                                                   , size: 24 
+                                                                                                  }), { value: 0 }, "debugText"]);
 
   // display mpos
-  const mousePosText = add([pos(width() * 0.6, 12 * 3), text("mpos: no mouse detected", { font: "sinko" }), { value: 0 }, "debugText"]);
+  const mousePosText = add([pos(width() * 0.5, 24 * 3), text("mpos: no mouse detected", { font: "sinko",
+                                                                                         size: 24
+                                                                                        }), { value: 0 }, "debugText"]);
   
   function updateMousePosText() {
     mp = mousePos();
@@ -299,26 +290,23 @@ scene("game", () => {
     // avocado.moveTo(mp.x, mp.y);
     avocado.dir = pos(mp.x, mp.y);
     avocado.stopPoint = pos(mp.x, mp.y);
-
   };
 
   // display tpos
-  const touchPosText = add([pos(width() * 0.6, 12 * 4), text("tpos: no touch detected", { font: "sinko" }), { value: 0 }, "debugText"]);
+  const touchPosText = add([pos(width() * 0.5, 24 * 4), text("tpos: no touch detected", { font: "sinko", 
+                                                                                         size: 24
+                                                                                        }), { value: 0 }, "debugText"]);
 
   function handleTTouch(x, y) {
     touchPosText.text = "tpos: " + JSON.stringify({ "x": Math.ceil(x), "y": Math.ceil(y), });
     aPosText.text = "apos: " + JSON.stringify(avocado.pos);
-    // console.log("handleTTouch : touchPosText.text", touchPosText.text);
+    console.log("handleTTouch : touchPosText.text", touchPosText.text);
     // console.log("avocado.pos", avocado.pos);
-    // moveAvocadoPos(pos(x,y));
+    avocado.dir = pos(x,y);
+    avocado.stopPoint = pos(x,y);
   };
 
-  mouseDown(updateMousePosText);
-
-  avocado.clicks(() => {
-    console.log("aloha");
-    play('avocado-o');
-  });
+  onMouseDown(updateMousePosText);
 
   get('debugText').forEach((e) => {e.hidden = true;});
   // spawn an enemy every period
@@ -335,14 +323,21 @@ scene("main", () => {
 
   const musics = add([
     pos(width()/2, height()),
-    text("Music: by @B-Diggs-1\n\"Just Two\"\non Soundcloud", {
+    text("Music @B-Diggs-1\n\"Just Two\"\non Soundcloud", {
       size: 32,
       font: "apl386o"
     }),
     origin("bot"),
     layer("ui")    
   ]);
-
+  
+  const startGame = () => {
+    console.log("main => game");
+    // for some strange reason I need to play a sound with Howler ONCE
+    avocadoOSound.play();
+    go("game");
+  };
+  
   const avocado = add([
     sprite("avocado"),
     pos(width() / 2, height() * 3 / 4),
@@ -355,14 +350,19 @@ scene("main", () => {
     },
     area(),
   ]);
-
-  avocado.clicks(() => {
-    console.log("main go to game");
-    // for some strange reason I need to play a sound with Howler ONCE
-    avocadoOSound.play();
-    go("game");
+  
+  onTouchStart((id, pos) => {
+    console.log(`touched ${pos}, avocado ${avocado.pos}`);
+    // console.log(`avocado tx pos ${pos.x - avocado.pos.x}`);
+    // console.log(`avocado ty pos ${pos.y - avocado.pos.y}`);
+    console.log(`avocado dist pos ${pos.dist(avocado.pos)}`);
+    if (pos.dist(avocado.pos) < 150) {
+      startGame();
+    }
   });
 
+  onClick('avocado', startGame);
+  
 });
 
 scene("end", () => {
@@ -392,7 +392,14 @@ scene("end", () => {
     origin("bot"),
     layer("ui")    
   ]);
-
+  
+  const startGame = () => {
+    console.log("end => game");
+    // for some strange reason I need to play a sound with Howler ONCE
+    avocadoOSound.play();
+    go("game");
+  };
+  
   const avocado = add([
     sprite("avocado"),
     pos(width() / 2, height() * 3 / 4),
@@ -407,12 +414,17 @@ scene("end", () => {
     area()
   ]);
 
-  avocado.clicks(() => {
-    console.log("end scene go to game");
-    // for some strange reason I need to play a sound with Howler ONCE
-    avocadoOSound.play();
-    go("game");
+  onTouchStart((id, pos) => {
+    console.log(`touched ${pos}, avocado ${avocado.pos}`);
+    // console.log(`avocado tx pos ${pos.x - avocado.pos.x}`);
+    // console.log(`avocado ty pos ${pos.y - avocado.pos.y}`);
+    console.log(`avocado dist pos ${pos.dist(avocado.pos)}`);
+    if (pos.dist(avocado.pos) < 350) {
+      startGame();
+    }
   });
+
+  onClick('avocado', startGame);
 
 });
 
