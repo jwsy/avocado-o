@@ -85,7 +85,7 @@ scene("game", () => {
     {
       isOFaced: false,
       lastOFaceTime: time(),
-      dir: pos(0, 0),
+      dir: null,
       stopPoint: pos(width()/2, height()/2),
       dScale: 2
     },
