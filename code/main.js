@@ -379,7 +379,7 @@ scene("end", () => {
 
   const bg = add([
     pos(width()/2,height()/10),
-    text("thank you!\n" + totalTime/1000 + "s\nI am HUGE!\n\nPlay again?\n\nby: replit@jwsy", 32),
+    text("thank you!\n" + totalTime/1000 + "s\nI am HUGE!\n\nPlay again?\n\nby replit@jwsy", 32),
     origin("top"),
     layer("ui")
   ]);
