@@ -19,14 +19,18 @@ function buildGame() {
 	code += `<script src="game.js"></script>\n`;
 
 	try {
-		// clean
-		try {
-			let dir = 'dist';
-			fs.rmSync(dir, { recursive: true, force: true });
-			console.log(`${dir}/ deleted!`);
-		} catch (err) {
-			console.log(`wtffff`);
-			console.error(`Error while deleting ${dir}.`);
+		// // clean
+		// try {
+		// 	let dir = 'dist';
+		// 	fs.rmSync(dir, { recursive: true, force: true });
+		// 	console.log(`${dir}/ deleted!`);
+		// } catch (err) {
+		// 	console.log(`wtffff`);
+		// 	console.error(`Error while deleting ${dir}.`);
+		// }
+		var dir = 'dist';
+		if (!fs.existsSync(dir)){
+			fs.mkdirSync(dir);
 		}
 
 		// build user code
