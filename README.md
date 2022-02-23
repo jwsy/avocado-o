@@ -6,7 +6,7 @@
 
 ## Play the game hosted on Netlify
 # https://avocado-o.netlify.app/
-Source: https://replit.com/@jwsy/avocado-remix
+Source: https://replit.com/@jwsy/avocado-o
 
 ![avocado](avocado-icon.png)![avocado](avocado-icon.png)![avocado](avocado-icon.png)
 

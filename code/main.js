@@ -1,4 +1,4 @@
-import kaboom from "kaboom";
+oimport kaboom from "kaboom";
 import {Howl} from "howler";
 
 k = kaboom({
@@ -379,14 +379,14 @@ scene("end", () => {
 
   const bg = add([
     pos(width()/2,height()/10),
-    text("thank you!\n" + totalTime/1000 + "s\nI am HUGE!\n\nPlay again?", 32),
+    text("thank you!\n" + totalTime/1000 + "s\nI am HUGE!\n\nPlay again?\n\nby: replit@jwsy", 32),
     origin("top"),
     layer("ui")
   ]);
 
   const musics = add([
     pos(width()/2, height()),
-    text("Music: by @B-Diggs-1\n\"Just Two\"\non Soundcloud", {
+    text("Music @B-Diggs-1\n\"Just Two\"\non Soundcloud", {
       size: 32,
       font: "apl386o"
     }),
