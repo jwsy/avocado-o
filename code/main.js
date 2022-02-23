@@ -1,4 +1,4 @@
-oimport kaboom from "kaboom";
+import kaboom from "kaboom";
 import {Howl} from "howler";
 
 k = kaboom({
