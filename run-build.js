@@ -28,6 +28,10 @@ function buildGame() {
 		// 	console.log(`wtffff`);
 		// 	console.error(`Error while deleting ${dir}.`);
 		// }
+		var dir = 'dist';
+		if (!fs.existsSync(dir)){
+			fs.mkdirSync(dir);
+		}
 
 		// build user code
 		esbuild.buildSync({
