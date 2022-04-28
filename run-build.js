@@ -84,6 +84,9 @@ function buildGame() {
 		fse.copySync("sounds", "dist/sounds");
 		fse.copySync("sprites", "dist/sprites");
 		console.log("Copied sounds and sprites to dist/");
+
+		fse.copySync("manifest.json", "dist/manifest.json");
+
 	} catch (err) {
 		console.error(err);
 	}
