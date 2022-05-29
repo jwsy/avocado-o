@@ -84,6 +84,14 @@ function buildGame() {
 		fse.copySync("sounds", "dist/sounds");
 		fse.copySync("sprites", "dist/sprites");
 		console.log("Copied sounds and sprites to dist/");
+
+		// PWA
+		fs.writeFileSync("dist/offline.html", template.replace("{{kaboom}}", code));
+		fse.copySync("manifest.json", "dist/manifest.json");
+		fse.copySync("pwabuilder-sw-register.js", "dist/pwabuilder-sw-register.js");
+		fse.copySync("pwabuilder-sw.js", "dist/pwabuilder-sw.js");
+		
+
 	} catch (err) {
 		console.error(err);
 	}

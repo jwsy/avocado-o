@@ -7,8 +7,6 @@
 ## Play the game hosted on Netlify
 # https://avocado-o.netlify.app/
 
-GitHub Source: https://github.com/jwsy/avocado-o
-
 Replit source: https://replit.com/@jwsy/avocado-o
 
 ![avocado](avocado-icon.png)![avocado](avocado-icon.png)![avocado](avocado-icon.png)

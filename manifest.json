@@ -1,0 +1,27 @@
+{
+  "background_color": "#ffffff",
+  "description": "avocado-o game",
+  "dir": "ltr",
+  "display": "minimal-ui",
+  "name": "avocado-o",
+  "orientation": "any",
+  "scope": "/",
+  "short_name": "avocado-o",
+  "start_url": "/",
+  "theme_color": "#ffffff",
+  "categories": ["games", "avocado"],
+  "screenshots": [],
+  "icons": [
+    {
+      "src": "sprites/avocado-icon.png",
+      "type": "image/png",
+      "sizes": "64x64"
+    },
+    {
+      "src": "sprites/avocado-o-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "shortcuts": []
+}
