@@ -15,7 +15,7 @@ Welcome! Kaboom is a JavaScript library that helps you make games fast and fun :
 
 Play the game locally!
 ----------------------
-Install node LTS, [I follow these instructions to use nvm for my node version control.](https://heynode.com/tutorial/install-nodejs-locally-nvm/)
+Install Node LTS, [I follow these instructions to use nvm for my node version control.](https://heynode.com/tutorial/install-nodejs-locally-nvm/)
 
 The dist is built in JS with nodejs (using *esbuild*) by running `node run.js`. This builds and runs the server. Stop the server `^c`
 
