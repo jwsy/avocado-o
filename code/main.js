@@ -298,12 +298,14 @@ scene("game", () => {
                                                                                         }), { value: 0 }, "debugText"]);
 
   function handleTTouch(x, y) {
-    touchPosText.text = "tpos: " + JSON.stringify({ "x": Math.ceil(x), "y": Math.ceil(y), });
+    const scaledX = x * 2;
+    const scaledY = y * 2;
+    touchPosText.text = "tpos: " + JSON.stringify({ "x": Math.ceil(scaledX), "y": Math.ceil(scaledY), });
     aPosText.text = "apos: " + JSON.stringify(avocado.pos);
     console.log("handleTTouch : touchPosText.text", touchPosText.text);
     // console.log("avocado.pos", avocado.pos);
-    avocado.dir = pos(x,y);
-    avocado.stopPoint = pos(x,y);
+    avocado.dir = pos(scaledX, scaledY);
+    avocado.stopPoint = pos(scaledX, scaledY);
   };
 
   onMouseDown(updateMousePosText);
