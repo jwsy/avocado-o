@@ -2,7 +2,7 @@ import kaboom from "kaboom";
 import {Howl} from "howler";
 
 k = kaboom({
-  "fullscreen":true,"scale":0.5,"startScene":"main",
+  "fullscreen":true,"scale":0.6,"startScene":"main",
   "background":[15,202,235,]
 });
 
@@ -298,8 +298,8 @@ scene("game", () => {
                                                                                         }), { value: 0 }, "debugText"]);
 
   function handleTTouch(x, y) {
-    const scaledX = x * 2;
-    const scaledY = y * 2;
+    const scaledX = x * (5/3);
+    const scaledY = y * (5/3);
     touchPosText.text = "tpos: " + JSON.stringify({ "x": Math.ceil(scaledX), "y": Math.ceil(scaledY), });
     aPosText.text = "apos: " + JSON.stringify(avocado.pos);
     console.log("handleTTouch : touchPosText.text", touchPosText.text);
