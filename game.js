@@ -5134,11 +5134,13 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
       size: 24
     }), { value: 0 }, "debugText"]);
     function handleTTouch(x2, y2) {
-      touchPosText.text = "tpos: " + JSON.stringify({ "x": Math.ceil(x2), "y": Math.ceil(y2) });
+      const scaledX = x2 * 2;
+      const scaledY = y2 * 2;
+      touchPosText.text = "tpos: " + JSON.stringify({ "x": Math.ceil(scaledX), "y": Math.ceil(scaledY) });
       aPosText.text = "apos: " + JSON.stringify(avocado.pos);
       console.log("handleTTouch : touchPosText.text", touchPosText.text);
-      avocado.dir = pos(x2, y2);
-      avocado.stopPoint = pos(x2, y2);
+      avocado.dir = pos(scaledX, scaledY);
+      avocado.stopPoint = pos(scaledX, scaledY);
     }
     __name(handleTTouch, "handleTTouch");
     ;
