@@ -21,6 +21,26 @@
   var __toESM = (module, isNodeMode) => {
     return __reExport(__markAsModule(__defProp(module != null ? __create(__getProtoOf(module)) : {}, "default", !isNodeMode && module && module.__esModule ? { get: () => module.default, enumerable: true } : { value: module, enumerable: true })), module);
   };
+  var __async = (__this, __arguments, generator) => {
+    return new Promise((resolve, reject) => {
+      var fulfilled = (value) => {
+        try {
+          step(generator.next(value));
+        } catch (e) {
+          reject(e);
+        }
+      };
+      var rejected = (value) => {
+        try {
+          step(generator.throw(value));
+        } catch (e) {
+          reject(e);
+        }
+      };
+      var step = (x2) => x2.done ? resolve(x2.value) : Promise.resolve(x2.value).then(fulfilled, rejected);
+      step((generator = generator.apply(__this, __arguments)).next());
+    });
+  };
 
   // node_modules/howler/dist/howler.js
   var require_howler = __commonJS({
@@ -32,7 +52,7 @@
         }, "HowlerGlobal");
         HowlerGlobal2.prototype = {
           init: function() {
-            var self = this || Howler2;
+            var self = this || Howler3;
             self._counter = 1e3;
             self._html5AudioPool = [];
             self.html5PoolSize = 10;
@@ -52,7 +72,7 @@
             return self;
           },
           volume: function(vol) {
-            var self = this || Howler2;
+            var self = this || Howler3;
             vol = parseFloat(vol);
             if (!self.ctx) {
               setupAudioContext();
@@ -63,7 +83,7 @@
                 return self;
               }
               if (self.usingWebAudio) {
-                self.masterGain.gain.setValueAtTime(vol, Howler2.ctx.currentTime);
+                self.masterGain.gain.setValueAtTime(vol, Howler3.ctx.currentTime);
               }
               for (var i = 0; i < self._howls.length; i++) {
                 if (!self._howls[i]._webAudio) {
@@ -81,13 +101,13 @@
             return self._volume;
           },
           mute: function(muted) {
-            var self = this || Howler2;
+            var self = this || Howler3;
             if (!self.ctx) {
               setupAudioContext();
             }
             self._muted = muted;
             if (self.usingWebAudio) {
-              self.masterGain.gain.setValueAtTime(muted ? 0 : self._volume, Howler2.ctx.currentTime);
+              self.masterGain.gain.setValueAtTime(muted ? 0 : self._volume, Howler3.ctx.currentTime);
             }
             for (var i = 0; i < self._howls.length; i++) {
               if (!self._howls[i]._webAudio) {
@@ -103,14 +123,14 @@
             return self;
           },
           stop: function() {
-            var self = this || Howler2;
+            var self = this || Howler3;
             for (var i = 0; i < self._howls.length; i++) {
               self._howls[i].stop();
             }
             return self;
           },
           unload: function() {
-            var self = this || Howler2;
+            var self = this || Howler3;
             for (var i = self._howls.length - 1; i >= 0; i--) {
               self._howls[i].unload();
             }
@@ -122,10 +142,10 @@
             return self;
           },
           codecs: function(ext) {
-            return (this || Howler2)._codecs[ext.replace(/^x-/, "")];
+            return (this || Howler3)._codecs[ext.replace(/^x-/, "")];
           },
           _setup: function() {
-            var self = this || Howler2;
+            var self = this || Howler3;
             self.state = self.ctx ? self.ctx.state || "suspended" : "suspended";
             self._autoSuspend();
             if (!self.usingWebAudio) {
@@ -155,7 +175,7 @@
             return self;
           },
           _setupCodecs: function() {
-            var self = this || Howler2;
+            var self = this || Howler3;
             var audioTest = null;
             try {
               audioTest = typeof Audio !== "undefined" ? new Audio() : null;
@@ -192,7 +212,7 @@
             return self;
           },
           _unlockAudio: function() {
-            var self = this || Howler2;
+            var self = this || Howler3;
             if (self._audioUnlocked || !self.ctx) {
               return;
             }
@@ -257,7 +277,7 @@
             return self;
           },
           _obtainHtml5Audio: function() {
-            var self = this || Howler2;
+            var self = this || Howler3;
             if (self._html5AudioPool.length) {
               return self._html5AudioPool.pop();
             }
@@ -270,7 +290,7 @@
             return new Audio();
           },
           _releaseHtml5Audio: function(audio) {
-            var self = this || Howler2;
+            var self = this || Howler3;
             if (audio._unlocked) {
               self._html5AudioPool.push(audio);
             }
@@ -278,7 +298,7 @@
           },
           _autoSuspend: function() {
             var self = this;
-            if (!self.autoSuspend || !self.ctx || typeof self.ctx.suspend === "undefined" || !Howler2.usingWebAudio) {
+            if (!self.autoSuspend || !self.ctx || typeof self.ctx.suspend === "undefined" || !Howler3.usingWebAudio) {
               return;
             }
             for (var i = 0; i < self._howls.length; i++) {
@@ -312,7 +332,7 @@
           },
           _autoResume: function() {
             var self = this;
-            if (!self.ctx || typeof self.ctx.resume === "undefined" || !Howler2.usingWebAudio) {
+            if (!self.ctx || typeof self.ctx.resume === "undefined" || !Howler3.usingWebAudio) {
               return;
             }
             if (self.state === "running" && self.ctx.state !== "interrupted" && self._suspendTimer) {
@@ -335,7 +355,7 @@
             return self;
           }
         };
-        var Howler2 = new HowlerGlobal2();
+        var Howler3 = new HowlerGlobal2();
         var Howl3 = /* @__PURE__ */ __name(function(o) {
           var self = this;
           if (!o.src || o.src.length === 0) {
@@ -347,7 +367,7 @@
         Howl3.prototype = {
           init: function(o) {
             var self = this;
-            if (!Howler2.ctx) {
+            if (!Howler3.ctx) {
               setupAudioContext();
             }
             self._autoplay = o.autoplay || false;
@@ -386,11 +406,11 @@
             self._onseek = o.onseek ? [{ fn: o.onseek }] : [];
             self._onunlock = o.onunlock ? [{ fn: o.onunlock }] : [];
             self._onresume = [];
-            self._webAudio = Howler2.usingWebAudio && !self._html5;
-            if (typeof Howler2.ctx !== "undefined" && Howler2.ctx && Howler2.autoUnlock) {
-              Howler2._unlockAudio();
+            self._webAudio = Howler3.usingWebAudio && !self._html5;
+            if (typeof Howler3.ctx !== "undefined" && Howler3.ctx && Howler3.autoUnlock) {
+              Howler3._unlockAudio();
             }
-            Howler2._howls.push(self);
+            Howler3._howls.push(self);
             if (self._autoplay) {
               self._queue.push({
                 event: "play",
@@ -407,7 +427,7 @@
           load: function() {
             var self = this;
             var url = null;
-            if (Howler2.noAudio) {
+            if (Howler3.noAudio) {
               self._emit("loaderror", null, "No audio support.");
               return;
             }
@@ -435,7 +455,7 @@
               if (!ext) {
                 console.warn('No file extension was found. Consider using the "format" property or specify an extension.');
               }
-              if (ext && Howler2.codecs(ext)) {
+              if (ext && Howler3.codecs(ext)) {
                 url = self._src[i];
                 break;
               }
@@ -507,7 +527,7 @@
               return sound._id;
             }
             if (self._webAudio) {
-              Howler2._autoResume();
+              Howler3._autoResume();
             }
             var seek = Math.max(0, sound._seek > 0 ? sound._seek : self._sprite[sprite2][0] / 1e3);
             var duration = Math.max(0, (self._sprite[sprite2][0] + self._sprite[sprite2][1]) / 1e3 - seek);
@@ -534,8 +554,8 @@
                 setParams();
                 self._refreshBuffer(sound);
                 var vol = sound._muted || self._muted ? 0 : sound._volume;
-                node.gain.setValueAtTime(vol, Howler2.ctx.currentTime);
-                sound._playStart = Howler2.ctx.currentTime;
+                node.gain.setValueAtTime(vol, Howler3.ctx.currentTime);
+                sound._playStart = Howler3.ctx.currentTime;
                 if (typeof node.bufferSource.start === "undefined") {
                   sound._loop ? node.bufferSource.noteGrainOn(0, seek, 86400) : node.bufferSource.noteGrainOn(0, seek, duration);
                 } else {
@@ -551,7 +571,7 @@
                   }, 0);
                 }
               }, "playWebAudio");
-              if (Howler2.state === "running" && Howler2.ctx.state !== "interrupted") {
+              if (Howler3.state === "running" && Howler3.ctx.state !== "interrupted") {
                 playWebAudio();
               } else {
                 self._playLock = true;
@@ -561,8 +581,8 @@
             } else {
               var playHtml5 = /* @__PURE__ */ __name(function() {
                 node.currentTime = seek;
-                node.muted = sound._muted || self._muted || Howler2._muted || node.muted;
-                node.volume = sound._volume * Howler2.volume();
+                node.muted = sound._muted || self._muted || Howler3._muted || node.muted;
+                node.volume = sound._volume * Howler3.volume();
                 node.playbackRate = sound._rate;
                 try {
                   var play2 = node.play();
@@ -610,7 +630,7 @@
                 node.src = self._src;
                 node.load();
               }
-              var loadedNoReadyState = window && window.ejecta || !node.readyState && Howler2._navigator.isCocoonJS;
+              var loadedNoReadyState = window && window.ejecta || !node.readyState && Howler3._navigator.isCocoonJS;
               if (node.readyState >= 3 || loadedNoReadyState) {
                 playHtml5();
               } else {
@@ -619,9 +639,9 @@
                 var listener = /* @__PURE__ */ __name(function() {
                   self._state = "loaded";
                   playHtml5();
-                  node.removeEventListener(Howler2._canPlayEvent, listener, false);
+                  node.removeEventListener(Howler3._canPlayEvent, listener, false);
                 }, "listener");
-                node.addEventListener(Howler2._canPlayEvent, listener, false);
+                node.addEventListener(Howler3._canPlayEvent, listener, false);
                 self._clearTimer(sound._id);
               }
             }
@@ -742,9 +762,9 @@
                   self._stopFade(sound._id);
                 }
                 if (self._webAudio && sound._node) {
-                  sound._node.gain.setValueAtTime(muted ? 0 : sound._volume, Howler2.ctx.currentTime);
+                  sound._node.gain.setValueAtTime(muted ? 0 : sound._volume, Howler3.ctx.currentTime);
                 } else if (sound._node) {
-                  sound._node.muted = Howler2._muted ? true : muted;
+                  sound._node.muted = Howler3._muted ? true : muted;
                 }
                 self._emit("mute", sound._id);
               }
@@ -792,9 +812,9 @@
                     self._stopFade(id[i]);
                   }
                   if (self._webAudio && sound._node && !sound._muted) {
-                    sound._node.gain.setValueAtTime(vol, Howler2.ctx.currentTime);
+                    sound._node.gain.setValueAtTime(vol, Howler3.ctx.currentTime);
                   } else if (sound._node && !sound._muted) {
-                    sound._node.volume = vol * Howler2.volume();
+                    sound._node.volume = vol * Howler3.volume();
                   }
                   self._emit("volume", sound._id);
                 }
@@ -828,7 +848,7 @@
                   self._stopFade(ids[i]);
                 }
                 if (self._webAudio && !sound._muted) {
-                  var currentTime = Howler2.ctx.currentTime;
+                  var currentTime = Howler3.ctx.currentTime;
                   var end = currentTime + len / 1e3;
                   sound._volume = from;
                   sound._node.gain.setValueAtTime(from, currentTime);
@@ -879,7 +899,7 @@
             var sound = self._soundById(id);
             if (sound && sound._interval) {
               if (self._webAudio) {
-                sound._node.gain.cancelScheduledValues(Howler2.ctx.currentTime);
+                sound._node.gain.cancelScheduledValues(Howler3.ctx.currentTime);
               }
               clearInterval(sound._interval);
               sound._interval = null;
@@ -965,11 +985,11 @@
                 if (sound) {
                   if (self.playing(id[i])) {
                     sound._rateSeek = self.seek(id[i]);
-                    sound._playStart = self._webAudio ? Howler2.ctx.currentTime : sound._playStart;
+                    sound._playStart = self._webAudio ? Howler3.ctx.currentTime : sound._playStart;
                   }
                   sound._rate = rate;
                   if (self._webAudio && sound._node && sound._node.bufferSource) {
-                    sound._node.bufferSource.playbackRate.setValueAtTime(rate, Howler2.ctx.currentTime);
+                    sound._node.bufferSource.playbackRate.setValueAtTime(rate, Howler3.ctx.currentTime);
                   } else if (sound._node) {
                     sound._node.playbackRate = rate;
                   }
@@ -1055,7 +1075,7 @@
                 }
               } else {
                 if (self._webAudio) {
-                  var realTime = self.playing(id) ? Howler2.ctx.currentTime - sound._playStart : 0;
+                  var realTime = self.playing(id) ? Howler3.ctx.currentTime - sound._playStart : 0;
                   var rateSeek = sound._rateSeek ? sound._rateSeek - sound._seek : 0;
                   return sound._seek + (rateSeek + realTime * Math.abs(sound._rate));
                 } else {
@@ -1100,20 +1120,20 @@
               if (!self._webAudio) {
                 self._clearSound(sounds[i]._node);
                 sounds[i]._node.removeEventListener("error", sounds[i]._errorFn, false);
-                sounds[i]._node.removeEventListener(Howler2._canPlayEvent, sounds[i]._loadFn, false);
+                sounds[i]._node.removeEventListener(Howler3._canPlayEvent, sounds[i]._loadFn, false);
                 sounds[i]._node.removeEventListener("ended", sounds[i]._endFn, false);
-                Howler2._releaseHtml5Audio(sounds[i]._node);
+                Howler3._releaseHtml5Audio(sounds[i]._node);
               }
               delete sounds[i]._node;
               self._clearTimer(sounds[i]._id);
             }
-            var index = Howler2._howls.indexOf(self);
+            var index = Howler3._howls.indexOf(self);
             if (index >= 0) {
-              Howler2._howls.splice(index, 1);
+              Howler3._howls.splice(index, 1);
             }
             var remCache = true;
-            for (i = 0; i < Howler2._howls.length; i++) {
-              if (Howler2._howls[i]._src === self._src || self._src.indexOf(Howler2._howls[i]._src) >= 0) {
+            for (i = 0; i < Howler3._howls.length; i++) {
+              if (Howler3._howls[i]._src === self._src || self._src.indexOf(Howler3._howls[i]._src) >= 0) {
                 remCache = false;
                 break;
               }
@@ -1121,7 +1141,7 @@
             if (cache && remCache) {
               delete cache[self._src];
             }
-            Howler2.noAudio = false;
+            Howler3.noAudio = false;
             self._state = "unloaded";
             self._sounds = [];
             self = null;
@@ -1214,7 +1234,7 @@
               self._emit("play", sound._id);
               sound._seek = sound._start || 0;
               sound._rateSeek = 0;
-              sound._playStart = Howler2.ctx.currentTime;
+              sound._playStart = Howler3.ctx.currentTime;
               var timeout = (sound._stop - sound._start) * 1e3 / Math.abs(sound._rate);
               self._endTimers[sound._id] = setTimeout(self._ended.bind(self, sound), timeout);
             }
@@ -1225,7 +1245,7 @@
               sound._rateSeek = 0;
               self._clearTimer(sound._id);
               self._cleanBuffer(sound._node);
-              Howler2._autoSuspend();
+              Howler3._autoSuspend();
             }
             if (!self._webAudio && !loop2) {
               self.stop(sound._id, true);
@@ -1306,7 +1326,7 @@
           },
           _refreshBuffer: function(sound) {
             var self = this;
-            sound._node.bufferSource = Howler2.ctx.createBufferSource();
+            sound._node.bufferSource = Howler3.ctx.createBufferSource();
             sound._node.bufferSource.buffer = cache[self._src];
             if (sound._panner) {
               sound._node.bufferSource.connect(sound._panner);
@@ -1318,18 +1338,18 @@
               sound._node.bufferSource.loopStart = sound._start || 0;
               sound._node.bufferSource.loopEnd = sound._stop || 0;
             }
-            sound._node.bufferSource.playbackRate.setValueAtTime(sound._rate, Howler2.ctx.currentTime);
+            sound._node.bufferSource.playbackRate.setValueAtTime(sound._rate, Howler3.ctx.currentTime);
             return self;
           },
           _cleanBuffer: function(node) {
             var self = this;
-            var isIOS = Howler2._navigator && Howler2._navigator.vendor.indexOf("Apple") >= 0;
-            if (Howler2._scratchBuffer && node.bufferSource) {
+            var isIOS = Howler3._navigator && Howler3._navigator.vendor.indexOf("Apple") >= 0;
+            if (Howler3._scratchBuffer && node.bufferSource) {
               node.bufferSource.onended = null;
               node.bufferSource.disconnect(0);
               if (isIOS) {
                 try {
-                  node.bufferSource.buffer = Howler2._scratchBuffer;
+                  node.bufferSource.buffer = Howler3._scratchBuffer;
                 } catch (e) {
                 }
               }
@@ -1338,7 +1358,7 @@
             return self;
           },
           _clearSound: function(node) {
-            var checkIE = /MSIE |Trident\//.test(Howler2._navigator && Howler2._navigator.userAgent);
+            var checkIE = /MSIE |Trident\//.test(Howler3._navigator && Howler3._navigator.userAgent);
             if (!checkIE) {
               node.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
             }
@@ -1360,7 +1380,7 @@
             self._paused = true;
             self._ended = true;
             self._sprite = "__default";
-            self._id = ++Howler2._counter;
+            self._id = ++Howler3._counter;
             parent._sounds.push(self);
             self.create();
             return self;
@@ -1368,23 +1388,23 @@
           create: function() {
             var self = this;
             var parent = self._parent;
-            var volume = Howler2._muted || self._muted || self._parent._muted ? 0 : self._volume;
+            var volume = Howler3._muted || self._muted || self._parent._muted ? 0 : self._volume;
             if (parent._webAudio) {
-              self._node = typeof Howler2.ctx.createGain === "undefined" ? Howler2.ctx.createGainNode() : Howler2.ctx.createGain();
-              self._node.gain.setValueAtTime(volume, Howler2.ctx.currentTime);
+              self._node = typeof Howler3.ctx.createGain === "undefined" ? Howler3.ctx.createGainNode() : Howler3.ctx.createGain();
+              self._node.gain.setValueAtTime(volume, Howler3.ctx.currentTime);
               self._node.paused = true;
-              self._node.connect(Howler2.masterGain);
-            } else if (!Howler2.noAudio) {
-              self._node = Howler2._obtainHtml5Audio();
+              self._node.connect(Howler3.masterGain);
+            } else if (!Howler3.noAudio) {
+              self._node = Howler3._obtainHtml5Audio();
               self._errorFn = self._errorListener.bind(self);
               self._node.addEventListener("error", self._errorFn, false);
               self._loadFn = self._loadListener.bind(self);
-              self._node.addEventListener(Howler2._canPlayEvent, self._loadFn, false);
+              self._node.addEventListener(Howler3._canPlayEvent, self._loadFn, false);
               self._endFn = self._endListener.bind(self);
               self._node.addEventListener("ended", self._endFn, false);
               self._node.src = parent._src;
               self._node.preload = parent._preload === true ? "auto" : parent._preload;
-              self._node.volume = volume * Howler2.volume();
+              self._node.volume = volume * Howler3.volume();
               self._node.load();
             }
             return self;
@@ -1401,7 +1421,7 @@
             self._paused = true;
             self._ended = true;
             self._sprite = "__default";
-            self._id = ++Howler2._counter;
+            self._id = ++Howler3._counter;
             return self;
           },
           _errorListener: function() {
@@ -1421,7 +1441,7 @@
               parent._emit("load");
               parent._loadQueue();
             }
-            self._node.removeEventListener(Howler2._canPlayEvent, self._loadFn, false);
+            self._node.removeEventListener(Howler3._canPlayEvent, self._loadFn, false);
           },
           _endListener: function() {
             var self = this;
@@ -1500,10 +1520,10 @@
               error();
             }
           }, "success");
-          if (typeof Promise !== "undefined" && Howler2.ctx.decodeAudioData.length === 1) {
-            Howler2.ctx.decodeAudioData(arraybuffer).then(success).catch(error);
+          if (typeof Promise !== "undefined" && Howler3.ctx.decodeAudioData.length === 1) {
+            Howler3.ctx.decodeAudioData(arraybuffer).then(success).catch(error);
           } else {
-            Howler2.ctx.decodeAudioData(arraybuffer, success, error);
+            Howler3.ctx.decodeAudioData(arraybuffer, success, error);
           }
         }, "decodeAudioData");
         var loadSound2 = /* @__PURE__ */ __name(function(self, buffer) {
@@ -1520,59 +1540,59 @@
           }
         }, "loadSound");
         var setupAudioContext = /* @__PURE__ */ __name(function() {
-          if (!Howler2.usingWebAudio) {
+          if (!Howler3.usingWebAudio) {
             return;
           }
           try {
             if (typeof AudioContext !== "undefined") {
-              Howler2.ctx = new AudioContext();
+              Howler3.ctx = new AudioContext();
             } else if (typeof webkitAudioContext !== "undefined") {
-              Howler2.ctx = new webkitAudioContext();
+              Howler3.ctx = new webkitAudioContext();
             } else {
-              Howler2.usingWebAudio = false;
+              Howler3.usingWebAudio = false;
             }
           } catch (e) {
-            Howler2.usingWebAudio = false;
+            Howler3.usingWebAudio = false;
           }
-          if (!Howler2.ctx) {
-            Howler2.usingWebAudio = false;
+          if (!Howler3.ctx) {
+            Howler3.usingWebAudio = false;
           }
-          var iOS = /iP(hone|od|ad)/.test(Howler2._navigator && Howler2._navigator.platform);
-          var appVersion = Howler2._navigator && Howler2._navigator.appVersion.match(/OS (\d+)_(\d+)_?(\d+)?/);
+          var iOS = /iP(hone|od|ad)/.test(Howler3._navigator && Howler3._navigator.platform);
+          var appVersion = Howler3._navigator && Howler3._navigator.appVersion.match(/OS (\d+)_(\d+)_?(\d+)?/);
           var version = appVersion ? parseInt(appVersion[1], 10) : null;
           if (iOS && version && version < 9) {
-            var safari = /safari/.test(Howler2._navigator && Howler2._navigator.userAgent.toLowerCase());
-            if (Howler2._navigator && !safari) {
-              Howler2.usingWebAudio = false;
+            var safari = /safari/.test(Howler3._navigator && Howler3._navigator.userAgent.toLowerCase());
+            if (Howler3._navigator && !safari) {
+              Howler3.usingWebAudio = false;
             }
           }
-          if (Howler2.usingWebAudio) {
-            Howler2.masterGain = typeof Howler2.ctx.createGain === "undefined" ? Howler2.ctx.createGainNode() : Howler2.ctx.createGain();
-            Howler2.masterGain.gain.setValueAtTime(Howler2._muted ? 0 : Howler2._volume, Howler2.ctx.currentTime);
-            Howler2.masterGain.connect(Howler2.ctx.destination);
+          if (Howler3.usingWebAudio) {
+            Howler3.masterGain = typeof Howler3.ctx.createGain === "undefined" ? Howler3.ctx.createGainNode() : Howler3.ctx.createGain();
+            Howler3.masterGain.gain.setValueAtTime(Howler3._muted ? 0 : Howler3._volume, Howler3.ctx.currentTime);
+            Howler3.masterGain.connect(Howler3.ctx.destination);
           }
-          Howler2._setup();
+          Howler3._setup();
         }, "setupAudioContext");
         if (typeof define === "function" && define.amd) {
           define([], function() {
             return {
-              Howler: Howler2,
+              Howler: Howler3,
               Howl: Howl3
             };
           });
         }
         if (typeof exports !== "undefined") {
-          exports.Howler = Howler2;
+          exports.Howler = Howler3;
           exports.Howl = Howl3;
         }
         if (typeof global !== "undefined") {
           global.HowlerGlobal = HowlerGlobal2;
-          global.Howler = Howler2;
+          global.Howler = Howler3;
           global.Howl = Howl3;
           global.Sound = Sound2;
         } else if (typeof window !== "undefined") {
           window.HowlerGlobal = HowlerGlobal2;
-          window.Howler = Howler2;
+          window.Howler = Howler3;
           window.Howl = Howl3;
           window.Sound = Sound2;
         }
@@ -4904,14 +4924,54 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   var startTime = -1;
   var turbos = 0;
   var TURBOMAX = 2;
-  var music = play("J2edited", {
-    volume: 0.6,
-    loop: true
-  });
+  var music = null;
+  function resumeAllAudioContexts() {
+    return __async(this, null, function* () {
+      try {
+        if (typeof import_howler.Howler !== "undefined" && import_howler.Howler.usingWebAudio && import_howler.Howler.ctx && import_howler.Howler.ctx.state === "suspended") {
+          yield import_howler.Howler.ctx.resume();
+        }
+      } catch (err) {
+        console.warn("Howler resume failed:", err);
+      }
+      try {
+        if (k && k.audio && k.audio.ctx && k.audio.ctx.state === "suspended") {
+          yield k.audio.ctx.resume();
+        }
+      } catch (err) {
+        console.warn("kaboom audio resume failed:", err);
+      }
+    });
+  }
+  __name(resumeAllAudioContexts, "resumeAllAudioContexts");
+  function installAudioUnlockOnce() {
+    const unlock = /* @__PURE__ */ __name(() => {
+      resumeAllAudioContexts();
+      window.removeEventListener("pointerdown", unlock);
+      window.removeEventListener("touchstart", unlock);
+      window.removeEventListener("keydown", unlock);
+    }, "unlock");
+    window.addEventListener("pointerdown", unlock, { once: true });
+    window.addEventListener("touchstart", unlock, { once: true });
+    window.addEventListener("keydown", unlock, { once: true });
+  }
+  __name(installAudioUnlockOnce, "installAudioUnlockOnce");
+  installAudioUnlockOnce();
   scene("game", () => {
     const PLAYER_SPEED = 200;
     let showStats = false;
-    music.play();
+    if (!music) {
+      music = play("J2edited", {
+        volume: 0.6,
+        loop: true
+      });
+    } else {
+      try {
+        music.play();
+      } catch (e) {
+        console.warn("could not re-play music", e);
+      }
+    }
     layers([
       "bg",
       "obj",
@@ -5167,7 +5227,10 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     ]);
     const startGame = /* @__PURE__ */ __name(() => {
       console.log("main => game");
-      avocadoOSound.play();
+      resumeAllAudioContexts().catch(() => {
+      }).finally(() => {
+        avocadoOSound.play();
+      });
       go("game");
     }, "startGame");
     const avocado = add([
@@ -5216,7 +5279,10 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     ]);
     const startGame = /* @__PURE__ */ __name(() => {
       console.log("end => game");
-      avocadoOSound.play();
+      resumeAllAudioContexts().catch(() => {
+      }).finally(() => {
+        avocadoOSound.play();
+      });
       go("game");
     }, "startGame");
     const avocado = add([
