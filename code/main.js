@@ -2,7 +2,7 @@ import kaboom from "kaboom";
 import {Howl} from "howler";
 
 k = kaboom({
-  "fullscreen":true,"startScene":"main",
+  "fullscreen":true,"scale":0.5,"startScene":"main",
   "background":[15,202,235,]
 });
 
