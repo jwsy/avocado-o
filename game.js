@@ -4886,7 +4886,7 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
   var import_howler = __toESM(require_howler());
   k = no({
     "fullscreen": true,
-    "scale": 0.5,
+    "scale": 0.6,
     "startScene": "main",
     "background": [15, 202, 235]
   });
@@ -5134,8 +5134,8 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
       size: 24
     }), { value: 0 }, "debugText"]);
     function handleTTouch(x2, y2) {
-      const scaledX = x2 * 2;
-      const scaledY = y2 * 2;
+      const scaledX = x2 * (5 / 3);
+      const scaledY = y2 * (5 / 3);
       touchPosText.text = "tpos: " + JSON.stringify({ "x": Math.ceil(scaledX), "y": Math.ceil(scaledY) });
       aPosText.text = "apos: " + JSON.stringify(avocado.pos);
       console.log("handleTTouch : touchPosText.text", touchPosText.text);
