@@ -1,5 +1,5 @@
 import kaboom from "kaboom";
-import {Howl} from "howler";
+import { Howl, Howler } from "howler";
 
 k = kaboom({
   "fullscreen":true,"scale":0.6,"startScene":"main",
@@ -23,18 +23,70 @@ const avocadoOSound = new Howl({
 let startTime = -1;
 let turbos = 0; 
 const TURBOMAX = 2;
+// we'll create/play this only AFTER user interaction
+let music = null;
 
-const music = play("J2edited", {
-  volume: 0.6,
-  loop: true
-});
+// ---- audio unlock helpers (for howler 2.2.3 + kaboom) ----
+async function resumeAllAudioContexts() {
+  // howler (2.2.3)
+  try {
+    // only try to resume if we're actually using WebAudio
+    if (
+      typeof Howler !== "undefined" &&
+      Howler.usingWebAudio &&
+      Howler.ctx &&
+      Howler.ctx.state === "suspended"
+    ) {
+      await Howler.ctx.resume();
+    }
+  } catch (err) {
+    console.warn("Howler resume failed:", err);
+  }
+
+  // kaboom's internal audio ctx (if present)
+  try {
+    if (k && k.audio && k.audio.ctx && k.audio.ctx.state === "suspended") {
+      await k.audio.ctx.resume();
+    }
+  } catch (err) {
+    console.warn("kaboom audio resume failed:", err);
+  }
+}
+
+function installAudioUnlockOnce() {
+  const unlock = () => {
+    resumeAllAudioContexts();
+    window.removeEventListener("pointerdown", unlock);
+    window.removeEventListener("touchstart", unlock);
+    window.removeEventListener("keydown", unlock);
+  };
+
+  window.addEventListener("pointerdown", unlock, { once: true });
+  window.addEventListener("touchstart", unlock, { once: true });
+  window.addEventListener("keydown", unlock, { once: true });
+}
+
+// install immediately so *first* tap unlocks audio
+installAudioUnlockOnce();
 
 scene("game", () => {
   // initialize context
   const PLAYER_SPEED = 200;
   let showStats = false;
 
-  music.play();
+  // start background music now that we're in a user-driven scene
+  if (!music) {
+    music = play("J2edited", {
+      volume: 0.6,
+      loop: true
+    });
+  } else {
+    try {
+      music.play();
+    } catch (e) {
+      console.warn("could not re-play music", e);
+    }
+  }
 
   layers([
     "bg",
@@ -335,8 +387,13 @@ scene("main", () => {
   
   const startGame = () => {
     console.log("main => game");
-    // for some strange reason I need to play a sound with Howler ONCE
-    avocadoOSound.play();
+    // make sure audio ctx is resumed before playing html5/WebAudio sounds
+    resumeAllAudioContexts()
+      .catch(() => {})
+      .finally(() => {
+        // for some strange reason I need to play a sound with Howler ONCE
+        avocadoOSound.play();
+      });
     go("game");
   };
   
@@ -398,8 +455,11 @@ scene("end", () => {
   
   const startGame = () => {
     console.log("end => game");
-    // for some strange reason I need to play a sound with Howler ONCE
-    avocadoOSound.play();
+    resumeAllAudioContexts()
+      .catch(() => {})
+      .finally(() => {
+        avocadoOSound.play();
+      });
     go("game");
   };
   
